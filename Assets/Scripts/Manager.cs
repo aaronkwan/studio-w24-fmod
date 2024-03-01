@@ -25,11 +25,6 @@ public class Manager : MonoBehaviour
     #endregion
 
     #region Controls
-
-    public void FlashLight()
-    {
-        Debug.Log("flashing light");
-    }
     
     public void TogglePause()
     {
@@ -84,6 +79,7 @@ public class Manager : MonoBehaviour
     private Coroutine fadeCoroutine;
     public void EnterCave()
     {
+        m_sound.EnterCave();
         if (fadeCoroutine != null)
         {
             StopCoroutine(fadeCoroutine);
@@ -92,6 +88,7 @@ public class Manager : MonoBehaviour
     }
     public void ExitCave()
     {
+        m_sound.ExitCave();
         if (fadeCoroutine != null)
         {
             StopCoroutine(fadeCoroutine);

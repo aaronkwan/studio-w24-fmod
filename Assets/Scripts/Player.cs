@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
             if (flashLightCoroutine == null && !hasStick)
             {
                 flashLightCoroutine = StartCoroutine(FlashLightCoroutine());
-                Manager.Instance.FlashLight();
+                Manager.Instance.m_sound.FlashLight();
             }
         }
         else if (!Input.GetKey(castKey))
@@ -186,6 +186,8 @@ public class Player : MonoBehaviour
     }
     private void PickUpStick()
     {
+        Manager.Instance.m_sound.PickupStick();
+
         hasStick = true;
         if (flashLightCoroutine != null)
         {
@@ -199,6 +201,8 @@ public class Player : MonoBehaviour
     }
     private void DropStick()
     {
+        Manager.Instance.m_sound.DropStick();
+
         hasStick = false;
         stick.SetActive(false);
         lamp_on.SetActive(false);
