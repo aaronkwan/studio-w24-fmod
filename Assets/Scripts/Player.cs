@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private GameObject stick;
+    [SerializeField] private GameObject lamp_off;
+    [SerializeField] private GameObject lamp_on;
+
     #region Input
 
     public enum INPUT
     {
         UP, DOWN, LEFT, RIGHT,
-        CAST, SPRINT, PAUSE
+        CAST, SPRINT, PAUSE,
+        INC_LIFE, DEC_LIFE
     }
     private KeyCode upKey = KeyCode.W;
     private KeyCode downKey = KeyCode.S;
@@ -19,6 +24,9 @@ public class Player : MonoBehaviour
     private KeyCode castKey = KeyCode.Space;
     private KeyCode sprintKey = KeyCode.LeftShift;
     private KeyCode pauseKey = KeyCode.Escape;
+    private KeyCode incKey = KeyCode.KeypadPlus;
+    private KeyCode decKey = KeyCode.KeypadMinus;
+
 
     #endregion
 
@@ -54,11 +62,25 @@ public class Player : MonoBehaviour
         Manager.Instance.currentSpeed = (direction == Vector2.zero) ? 0 : 
             direction.normalized.magnitude * currentSpeed;
 
+        // Rotation:
+        if (direction != Vector2.zero)
+        {
+            float targetAngle = (direction == Vector2.up) ? 0 : (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 90f;
+            float currentAngle = transform.rotation.eulerAngles.z;
+            float angleDifference = Mathf.DeltaAngle(currentAngle, targetAngle);
+            float newAngle = Mathf.LerpAngle(currentAngle, targetAngle, 0.2f);
+            transform.rotation = Quaternion.Euler(0, 0, newAngle);
+        }
+
         // Casting:
         if (Input.GetKey(castKey) && !isCasting)
         {
-            Manager.Instance.RingBell();
             isCasting = true;
+            if (flashLightCoroutine == null && !hasStick)
+            {
+                flashLightCoroutine = StartCoroutine(FlashLightCoroutine());
+                Manager.Instance.FlashLight();
+            }
         }
         else if (!Input.GetKey(castKey))
         {
@@ -85,6 +107,16 @@ public class Player : MonoBehaviour
         {
             isPausing = false;
         }
+
+        // Timer cheats:
+        if (Input.GetKey(incKey))
+        {
+            Manager.Instance.life += 0.5f;
+        }
+        if (Input.GetKey(decKey))
+        {
+            Manager.Instance.life -= 0.5f;
+        }
     }
     #endregion
 
@@ -100,7 +132,22 @@ public class Player : MonoBehaviour
         if (collision.gameObject.name == "EnterCave")
         {
             Manager.Instance.EnterCave();
+            return;
         }
+        if (collision.gameObject.name == "Stick(Clone)")
+        {
+            PickUpStick();
+            Destroy(collision.gameObject);
+            Manager.Instance.SpawnNewStick();
+            return;
+        }
+        if (collision.gameObject.name == "Campfire" && hasStick)
+        {
+            DropStick();
+            Manager.Instance.life += 10f;
+            return;
+        }
+
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -117,8 +164,47 @@ public class Player : MonoBehaviour
         if (collision.gameObject.name == "Stone")
         {
             Manager.Instance.currentGround = Manager.GROUND.STONE;
+            return;
         }
     }
+
+    private Coroutine flashLightCoroutine;
+    private bool hasStick = false;
+    IEnumerator FlashLightCoroutine()
+    {
+        // Flash Lamp, idle for 4 seconds, then reset.
+        lamp_on.SetActive(true);
+        lamp_off.SetActive(false);
+        Manager.Instance.showSticks = true;
+        yield return new WaitForSeconds(0.5f);
+        lamp_on.SetActive(false);
+        lamp_off.SetActive(false);
+        Manager.Instance.showSticks = false;
+        yield return new WaitForSeconds(4f);
+        lamp_off.SetActive(true);
+        flashLightCoroutine = null;
+    }
+    private void PickUpStick()
+    {
+        hasStick = true;
+        if (flashLightCoroutine != null)
+        {
+            StopCoroutine(flashLightCoroutine);
+            flashLightCoroutine = null;
+            Manager.Instance.showSticks = false;
+        }
+        lamp_on.SetActive(false);
+        lamp_off.SetActive(false);
+        stick.SetActive(true);
+    }
+    private void DropStick()
+    {
+        hasStick = false;
+        stick.SetActive(false);
+        lamp_on.SetActive(false);
+        lamp_off.SetActive(true);
+    }
+
 
 
     #endregion
