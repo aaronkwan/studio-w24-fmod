@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7233673b-f999-4eaa-b5fe-a2929bb303eb}">
+		<property name="assetPath">
+			<value>rain.ogg</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>37.5</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{684d22de-b600-45cb-9535-aa2e6a974926}</destination>
+		</relationship>
+	</object>
+</objects>

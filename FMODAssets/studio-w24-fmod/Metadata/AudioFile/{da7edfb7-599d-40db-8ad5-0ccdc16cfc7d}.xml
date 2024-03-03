@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{da7edfb7-599d-40db-8ad5-0ccdc16cfc7d}">
+		<property name="assetPath">
+			<value>pickupstick.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.1306122448979592</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{684d22de-b600-45cb-9535-aa2e6a974926}</destination>
+		</relationship>
+	</object>
+</objects>
