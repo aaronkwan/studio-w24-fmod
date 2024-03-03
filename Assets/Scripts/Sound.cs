@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class Sound : MonoBehaviour
 {
-
+    [SerializeField] private EventReference flashLight;
+    [SerializeField] private EventReference pickUpStick;
+    [SerializeField] private EventReference dropStick;
 
     // Event emitters:
 
@@ -12,14 +15,17 @@ public class Sound : MonoBehaviour
     public void FlashLight()
     {
         Debug.Log("SFX: flashing light");
+        RuntimeManager.PlayOneShot(flashLight, transform.position);
     }
     public void PickupStick()
     {
         Debug.Log("SFX: picking up stick");
+        RuntimeManager.PlayOneShot(pickUpStick, transform.position);
     }
     public void DropStick()
     {
         Debug.Log("SFX: dropping stick");
+        RuntimeManager.PlayOneShot(dropStick, transform.position);
     }
 
     // Reverb Zones:

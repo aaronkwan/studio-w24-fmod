@@ -12029,11 +12029,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashLight:
     Guid:
-      Data1: 1381819276
-      Data2: 1129401986
-      Data3: 1562093953
-      Data4: 480711070
+      Data1: -1440407263
+      Data2: 1085086928
+      Data3: -1369099622
+      Data4: 664492268
     Path: event:/flashlight
+  pickUpStick:
+    Guid:
+      Data1: 668357030
+      Data2: 1114578319
+      Data3: 41180298
+      Data4: 568754411
+    Path: event:/pickupstick
+  dropStick:
+    Guid:
+      Data1: -112538090
+      Data2: 1145159788
+      Data3: -1514699606
+      Data4: -858951571
+    Path: event:/dropstick
 --- !u!1 &955152976
 GameObject:
   m_ObjectHideFlags: 0
