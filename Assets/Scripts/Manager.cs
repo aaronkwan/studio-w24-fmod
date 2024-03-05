@@ -1,3 +1,4 @@
+using FMOD;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,6 +31,7 @@ public class Manager : MonoBehaviour
     {
         isPaused = !isPaused;
         m_display.DisplayPause(isPaused);
+        m_sound.AudioPause(isPaused);
     }
     #endregion
 

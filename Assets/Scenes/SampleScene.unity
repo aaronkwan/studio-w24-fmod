@@ -12125,6 +12125,27 @@ MonoBehaviour:
       Data3: -1746889026
       Data4: -914982397
     Path: event:/ambience
+  reverb:
+    Guid:
+      Data1: -1306579130
+      Data2: 1184867701
+      Data3: -1631081576
+      Data4: 1610241418
+    Path: snapshot:/echo
+  pause:
+    Guid:
+      Data1: -2058999342
+      Data2: 1102725533
+      Data3: -348875855
+      Data4: 61365048
+    Path: snapshot:/pause
+  intensity:
+    Guid:
+      Data1: -2065629072
+      Data2: 1299536247
+      Data3: 1801320884
+      Data4: 945151127
+    Path: snapshot:/intensity
 --- !u!1 &955152976
 GameObject:
   m_ObjectHideFlags: 0

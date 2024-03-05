@@ -17,6 +17,15 @@ public class Sound : MonoBehaviour
     [SerializeField] private EventReference ambience;
     private EventInstance ambienceInstance;
 
+    [SerializeField] private EventReference reverb;
+    private EventInstance reverbInstance;
+
+    [SerializeField] private EventReference pause;
+    private EventInstance pauseInstance;
+
+    [SerializeField] private EventReference intensity;
+    private EventInstance intensityInstance;
+
     public void FlashLight()
     {
         Debug.Log("SFX: flashing light");
@@ -41,6 +50,13 @@ public class Sound : MonoBehaviour
         ambienceInstance = RuntimeManager.CreateInstance(ambience);
         RuntimeManager.AttachInstanceToGameObject(ambienceInstance, transform);
         ambienceInstance.start();
+
+        reverbInstance = RuntimeManager.CreateInstance(reverb);
+
+        pauseInstance = RuntimeManager.CreateInstance(pause);
+
+        intensityInstance = RuntimeManager.CreateInstance(intensity);
+        intensityInstance.start();
     }
     void OnDisable()
     {
@@ -49,12 +65,24 @@ public class Sound : MonoBehaviour
 
         ambienceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         ambienceInstance.release();
+
+        reverbInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        reverbInstance.release();
+
+        pauseInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        pauseInstance.release();
+
+        intensityInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        intensityInstance.release();
     }
     void FixedUpdate()
     {
         // Dynamic Footsteps Method:
         footstepInstance.setParameterByName("currentSpeed", Manager.Instance.currentSpeed);
         footstepInstance.setParameterByName("currentGround", (int) Manager.Instance.currentGround);
+
+        // Life Param:
+        RuntimeManager.StudioSystem.setParameterByName("lifetime", Manager.Instance.life);
 
         // Start / Stop Method:
         //bool isMoving = (Manager.Instance.currentSpeed > 0);
@@ -90,11 +118,26 @@ public class Sound : MonoBehaviour
     public void EnterCave()
     {
         Debug.Log("SFX: enter cave");
-        ambienceInstance.setParameterByName("location", 1); // "cave"
+        RuntimeManager.StudioSystem.setParameterByName("location", 1); // cave        
+        reverbInstance.start();
     }
     public void ExitCave()
     {
         Debug.Log("SFX: exit cave");
-        ambienceInstance.setParameterByName("location", 0); // "field"
+        RuntimeManager.StudioSystem.setParameterByName("location", 0); // field
+        reverbInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
+    // Pause:
+    public void AudioPause(bool pause)
+    {
+        if (pause)
+        {
+            pauseInstance.start();
+        }
+        else
+        {
+            pauseInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
     }
 }
